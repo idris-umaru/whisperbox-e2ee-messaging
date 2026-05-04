@@ -5,7 +5,7 @@ export function Login({ busy, error, form, onChange, onSubmit }) {
   return (
     <form className="auth-form" onSubmit={onSubmit}>
       <label>
-        Username, not email
+        Username
         <input
           autoComplete="username"
           maxLength={32}
