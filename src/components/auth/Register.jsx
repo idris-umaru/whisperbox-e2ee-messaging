@@ -57,4 +57,5 @@ export function Register({ busy, error, form, onChange, onSubmit }) {
       </Button>
     </form>
   );
+  
 }
