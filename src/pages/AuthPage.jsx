@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Login } from "../components/auth/Login";
 import { Register } from "../components/auth/Register";
 import { Navbar } from "../components/layout/Navbar";
+import { LAST_USERNAME_KEY } from "../constants";
 
 export function AuthPage({ onLogin, onRegister }) {
   const [mode, setMode] = useState("login");
   const [form, setForm] = useState({
-    username: "",
+    username: sessionStorage.getItem(LAST_USERNAME_KEY) ?? "",
     displayName: "",
     password: "",
   });
@@ -16,7 +17,10 @@ export function AuthPage({ onLogin, onRegister }) {
   const isRegistering = mode === "register";
 
   function updateField(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
+    const nextValue =
+      field === "username" ? value.replace(/\s/g, "").toLowerCase() : value;
+
+    setForm((current) => ({ ...current, [field]: nextValue }));
   }
 
   async function submit(event) {
