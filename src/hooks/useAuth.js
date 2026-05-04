@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { LAST_USERNAME_KEY } from "../constants";
 import {
   api,
   clearSessionTokens,
@@ -15,6 +16,7 @@ export function useAuth() {
 
   const authenticate = useCallback(async ({ user, privateKey, tokens }) => {
     saveSessionTokens(tokens);
+    sessionStorage.setItem(LAST_USERNAME_KEY, user.username);
     await saveWrappedKeyMaterial(user);
     setSession({ user, privateKey });
     setNotice("");
@@ -22,9 +24,10 @@ export function useAuth() {
 
   const register = useCallback(
     async ({ displayName, password, username }) => {
+      const normalizedUsername = username.trim().toLowerCase();
       const keys = await createRegistrationKeys(password);
       const auth = await api.register({
-        username: username.trim(),
+        username: normalizedUsername,
         display_name: displayName.trim(),
         password,
         public_key: keys.publicKeyBase64,
@@ -43,8 +46,9 @@ export function useAuth() {
 
   const login = useCallback(
     async ({ password, username }) => {
+      const normalizedUsername = username.trim().toLowerCase();
       const auth = await api.login({
-        username: username.trim(),
+        username: normalizedUsername,
         password,
       });
       const privateKey = await unlockPrivateKey(
