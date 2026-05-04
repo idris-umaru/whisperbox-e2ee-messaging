@@ -50,7 +50,7 @@ The app uses HTTPS-only backend and WebSocket endpoints:
 Browser client
   |
   | 1. Generate RSA-OAEP keypair locally
-  | 2. Wrap private key with AES-KW from password/PBKDF2
+  | 2. Encrypt private key with AES-GCM from password/PBKDF2
   v
 WhisperBox API
   - stores public_key
@@ -71,8 +71,8 @@ Browser client A                         Browser client B
 
 1. Registration generates an extractable RSA-OAEP 2048-bit keypair in Web Crypto.
 2. A random 128-bit PBKDF2 salt is generated locally.
-3. PBKDF2 derives an AES-KW 256-bit wrapping key from the user's password.
-4. The RSA private key is wrapped with AES-KW and sent to the server only as encrypted key material.
+3. PBKDF2 derives an AES-GCM 256-bit wrapping key from the user's password.
+4. The RSA private key is exported as PKCS#8, encrypted with AES-GCM, and sent to the server only as encrypted key material.
 5. Each outgoing message creates a fresh AES-GCM 256-bit content key and 96-bit IV.
 6. Message plaintext is AES-GCM encrypted in the browser.
 7. The AES key is RSA-OAEP encrypted for the recipient and again for the sender.
