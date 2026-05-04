@@ -5,5 +5,6 @@ export const WS_BASE_URL = API_BASE_URL.replace(/^http/, "ws");
 
 export const ACCESS_TOKEN_KEY = "whisperbox.accessToken";
 export const REFRESH_TOKEN_KEY = "whisperbox.refreshToken";
+export const LAST_USERNAME_KEY = "whisperbox.lastUsername";
 
 export const MAX_MESSAGE_LENGTH = 4000;
